@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.MediaController;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.google.gson.Gson;
@@ -39,8 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView tv_weather, tv_location, tv_temperature,tv_suggestion;//文字内容显示控件
     private EditText mET_1;
     private ListView mList_1;
-    String cityID = "CN101010100",cityName = "鹿城";
-    String s = null;
+    String cityID ,cityName;
     List<String> CityIDList = new ArrayList<>();
     List<String> CityNameList = new ArrayList<>();
 
@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         //        天气初始化
         HeConfig.switchToDevService();
@@ -62,17 +63,25 @@ public class MainActivity extends AppCompatActivity {
         
         mbt_1 = (Button) findViewById(R.id.mbt_1);
 
-        mList_1 = (ListView) findViewById(R.id.List_1);
+//        mList_1 = (ListView) findViewById(R.id.List_1);
 
      //   MediaPlayer();//视频播放
 
         mbt_1.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                s = mET_1.getText().toString();
-          //      getWeather();//天气
-                Log.i(TAG, "onClick: "+ s);
-                getGPI();
+                cityName = mET_1.getText().toString();
+                if (cityName == " "){
+                    Toast.makeText(MainActivity.this, "未输入城市", Toast.LENGTH_SHORT).show();
+                }else {getGPI();}
+                if(CityNameList.get(0) == null)
+                {
+                    Toast.makeText(MainActivity.this, "数据获取失败", Toast.LENGTH_SHORT).show();
+                }else if(cityID != null){
+                    cityID = CityIDList.get(0);
+                    getWeather();//天气
+                }
+//
             }
         });
 
@@ -120,8 +129,8 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onSuccess(WeatherNowBean weatherBean) {
-                Log.i(TAG, "getWeather onSuccess: " + new Gson().toJson(weatherBean));
-                Log.i(TAG, "onSuccess: " + new Gson().toJson(weatherBean.getBasic()));
+//                Log.i(TAG, "getWeather onSuccess: " + new Gson().toJson(weatherBean));
+//                Log.i(TAG, "onSuccess: " + new Gson().toJson(weatherBean.getBasic()));
 
                 String weather = null, temperature = null, city = null, district = null, cid = null;
                 //先判断返回的status是否正确，当status正确时获取数据，若status不正确，可查看status对应的Code值找到原因
@@ -145,6 +154,7 @@ public class MainActivity extends AppCompatActivity {
                 String temperature2 = temperature + "℃";
                 tv_weather.setText(weather);
                 tv_temperature.setText(temperature2);
+
             }
         });
     }
@@ -161,6 +171,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onSuccess(GeoBean geoBean) {
 
+
                 String JsonGPI = new Gson().toJson(geoBean.getLocationBean());
                 Gson gson = new Gson();
                 List<GsonF> gsonFList = gson.fromJson(JsonGPI, new TypeToken<List<GsonF>>(){}.getType());
@@ -168,9 +179,9 @@ public class MainActivity extends AppCompatActivity {
                     CityIDList.add(gsonf.getId());
                     CityNameList.add(gsonf.getName());
                 }
-                Log.i(TAG, "城市: "+CityIDList);
-                Log.i(TAG, "城市ID: "+CityNameList);
-                Log.i(TAG, "这里: " +JsonGPI);
+                Log.i(TAG, "城市: "+CityNameList.get(0));
+                Log.i(TAG, "城市ID: "+CityIDList.get(0));
+
             }
 
         });

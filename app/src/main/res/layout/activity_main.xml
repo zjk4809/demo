@@ -60,18 +60,18 @@
 
     <EditText
         android:id="@+id/ETX_1"
-        android:layout_width="80dp"
-        android:layout_height="50dp"
-        android:text=""
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="城市名"
         android:textSize="18sp"
         android:layout_marginTop="10dp"
         android:layout_toEndOf="@id/mbt_1"
         android:layout_below="@id/RV_1"/>
 
-    <ListView
-        android:id="@+id/List_1"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+<!--    <ListView-->
+<!--        android:id="@+id/List_1"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent" />-->
 
 
 </RelativeLayout>
