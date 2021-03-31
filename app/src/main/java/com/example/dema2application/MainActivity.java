@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView tv_weather, tv_location, tv_temperature,tv_suggestion;//文字内容显示控件
     private EditText mET_1;
     private ListView mList_1;
-    String cityID ,cityName;
+    String cityID = "1000010",cityName = "北京";
     List<String> CityIDList = new ArrayList<>();
     List<String> CityNameList = new ArrayList<>();
 
@@ -70,18 +70,7 @@ public class MainActivity extends AppCompatActivity {
         mbt_1.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                cityName = mET_1.getText().toString();
-                if (cityName == " "){
-                    Toast.makeText(MainActivity.this, "未输入城市", Toast.LENGTH_SHORT).show();
-                }else {getGPI();}
-                if(CityNameList.get(0) == null)
-                {
-                    Toast.makeText(MainActivity.this, "数据获取失败", Toast.LENGTH_SHORT).show();
-                }else if(cityID != null){
-                    cityID = CityIDList.get(0);
-                    getWeather();//天气
-                }
-//
+
             }
         });
 
@@ -170,7 +159,6 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onSuccess(GeoBean geoBean) {
-
 
                 String JsonGPI = new Gson().toJson(geoBean.getLocationBean());
                 Gson gson = new Gson();
